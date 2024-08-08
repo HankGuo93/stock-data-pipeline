@@ -162,3 +162,7 @@ cython_debug/
 #.idea/
 
 settings-local.cfg
+
+# Exclude everything under data/ except for data/
+data/*
+!data/.gitkeep
