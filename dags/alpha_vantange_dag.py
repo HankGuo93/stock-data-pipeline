@@ -35,18 +35,32 @@ dag = DAG(
 
 
 def fetch_task():
-    # fetch_data
-    logging.info("Fetching stock data...")
+    try:
+        fetch_data(API_KEY, DATA_PATH)
+        logging.info("Fetching stock data...")
+    except Exception as e:
+        logging.error(f"Error fetching stock data: {e}")
+        raise
 
 
 def clean_task():
-    # clean_data(DATA_PATH, CLEANED_DATA_PATH)
-    logging.info("Cleaning stock data...")
+    try:
+        # 假設 clean_data 函數已經定義
+        clean_data(DATA_PATH, CLEANED_DATA_PATH)
+        logging.info("Cleaning stock data...")
+    except Exception as e:
+        logging.error(f"Error cleaning stock data: {e}")
+        raise
 
 
 def store_task():
-    # os.rename(CLEANED_DATA_PATH, FINAL_DATA_PATH)
-    logging.info("Storing stock data...")
+    try:
+        # 假設 os.rename 函數已經定義
+        os.rename(CLEANED_DATA_PATH, FINAL_DATA_PATH)
+        logging.info("Storing stock data...")
+    except Exception as e:
+        logging.error(f"Error storing stock data: {e}")
+        raise
 
 
 fetch_stock_data_task = PythonOperator(
