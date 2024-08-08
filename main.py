@@ -2,7 +2,8 @@ import os
 
 from airflow import DAG
 from airflow.utils.dates import days_ago
-from scripts import load_config, fetch_data, clean_data, send_email
+from dags.scripts import load_config, fetch_data, clean_data, send_email
+
 
 def main():
     default_args = {
@@ -15,8 +16,8 @@ def main():
         description='An example DAG with EmailOperator',
         schedule_interval=None,
     )
-    
-    config = load_config('config/settings-local.cfg')
+
+    config = load_config('config/settings_local.cfg')
 
     api_key = config['API_KEY']
     data_path = config['DATA_PATH']
@@ -42,7 +43,8 @@ def main():
             task_id='send_success_email',
             to=email_recipient,
             subject='Stock Data Processing Completed',
-            html_content=f'Data successfully processed and stored at: {final_data_path}',
+            html_content=f'Data successfully processed and stored at: {
+                final_data_path}',
             dag=dag
         )
         success_email
@@ -53,12 +55,13 @@ def main():
             task_id='send_failure_email',
             to=email_recipient,
             subject='Stock Data Processing Failed',
-            html_content=f'The stock data processing DAG has failed. Error: {str(e)}',
+            html_content=f'The stock data processing DAG has failed. Error: {
+                str(e)}',
             dag=dag
         )
         failure_email
         print("Failure notification sent.")
 
+
 if __name__ == "__main__":
     main()
-
