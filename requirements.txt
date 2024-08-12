@@ -1,3 +1,7 @@
+pip
+setuptools
+wheel
+psycopg2
 apache-airflow
 alpha_vantage
 pandas

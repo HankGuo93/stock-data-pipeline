@@ -19,11 +19,17 @@ This repository contains an example of a data pipeline that fetches, processes, 
 
 3. Initialize and set up the pipeline environment:
     ```bash
+    echo "export AIRFLOW_HOME=$(pwd)" >> ~/.bashrc
+    source ~/.bashrc
+    # adjust every path in airflow.cfg to your local path 
+    # e.g. dags_folder = ~/airflow/dags -> dags_folder = ${AIRFLOW_HOME}/dags
     airflow db init
     airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com
     ```
+4. Make settings_local.cfg  
+   use settings.cfg as a template
 
-4. Start the pipeline:
+5. Start the pipeline:
     ```bash
     airflow webserver --port 8080
     airflow scheduler

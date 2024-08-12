@@ -7,23 +7,23 @@ from dags.scripts import load_config, fetch_data, clean_data, send_email
 
 def main():
     default_args = {
-        'owner': 'airflow',
-        'start_date': days_ago(1),
+        "owner": "airflow",
+        "start_date": days_ago(1),
     }
     dag = DAG(
-        'stock_data_pipeline_test',
+        "stock_data_pipeline_test",
         default_args=default_args,
-        description='An example DAG with EmailOperator',
+        description="An example DAG with EmailOperator",
         schedule_interval=None,
     )
 
-    config = load_config('config/settings_local.cfg')
+    config = load_config(config_file="./config/settings_local.cfg")
 
-    api_key = config['API_KEY']
-    data_path = config['DATA_PATH']
-    cleaned_data_path = config['CLEANED_DATA_PATH']
-    final_data_path = config['FINAL_DATA_PATH']
-    email_recipient = config['EMAIL_RECIPIENT']
+    api_key = config["API_KEY"]
+    data_path = config["DATA_PATH"]
+    cleaned_data_path = config["CLEANED_DATA_PATH"]
+    final_data_path = config["FINAL_DATA_PATH"]
+    email_recipient = config["EMAIL_RECIPIENT"]
 
     try:
         print("Fetching data...")
@@ -40,24 +40,24 @@ def main():
 
         print("Sending success notification...")
         success_email = send_email(
-            task_id='send_success_email',
+            task_id="send_success_email",
             to=email_recipient,
-            subject='Stock Data Processing Completed',
-            html_content=f'Data successfully processed and stored at: {
-                final_data_path}',
-            dag=dag
+            subject="Stock Data Processing Completed",
+            html_content=f"""Data successfully processed and stored at: {
+                final_data_path}""",
+            dag=dag,
         )
         success_email
         print("Success notification sent.")
     except Exception as e:
         print("An error occurred:", str(e))
         failure_email = send_email(
-            task_id='send_failure_email',
+            task_id="send_failure_email",
             to=email_recipient,
-            subject='Stock Data Processing Failed',
-            html_content=f'The stock data processing DAG has failed. Error: {
-                str(e)}',
-            dag=dag
+            subject="Stock Data Processing Failed",
+            html_content=f"""The stock data processing DAG has failed. Error: {
+                str(e)}""",
+            dag=dag,
         )
         failure_email
         print("Failure notification sent.")
